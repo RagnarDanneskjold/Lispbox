@@ -23,7 +23,7 @@ OPENMCL_PLATFORM        := darwinx8664
 OPENMCL_RELEASE         := snapshot
 #OPENMCL_SCRIPT         	:= openmcl
 OPENMCL_SCRIPT         	:= openmcl64
-SLIME_VERSION           := current
+SLIME_VERSION           := 2009-08-06
 PRACTICALS_VERSION      := 1.0.3
 PORTABLEASERVE_VERSION  := 1.2.35
 

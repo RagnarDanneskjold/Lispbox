@@ -8,6 +8,6 @@ staging-archives/$(THING).tar.gz: $(prefix)/$(THING)
 $(prefix)/$(THING): staging/$(THING) $(prefix)
 	cp -r $< $@
 
-staging/$(THING): source-archives/$(THING).tar  staging
+staging/$(THING): source-archives/slime-current.tar  staging
 	cat $< | (cd staging; tar xzf -)
 	cd staging/$(THING)/doc; $(MAKE); $(MAKE) clean
