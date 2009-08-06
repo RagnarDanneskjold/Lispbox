@@ -59,7 +59,7 @@ ifeq ($(os),Windows)
 staging-archives/$(THING).tar.gz: staging/$(THING)
 	(cd staging; tar czf - $(THING)) > $@
 
-staging/$(THING): binary-archives/$(THING)-barebin-i386.tar.gz
-	cat $< | (cd staging; tar xzf -)
+staging/$(THING): binary-archives/$(THING)-barebin-i386.zip
+	unzip $< -d staging
 
 endif
