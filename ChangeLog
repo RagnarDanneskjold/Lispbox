@@ -2,4 +2,3 @@
 
 	* write-lispbox.sh: Changed way we compute LISPBOX_HOME in order
 	to work when script run as ./lispbox.sh
-

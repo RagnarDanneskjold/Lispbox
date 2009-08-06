@@ -4,15 +4,15 @@ cat <<EOF
 (require 'cl)
 
 (defun lispbox-list-to-filename (list)
-  (apply 
-   #'concat 
+  (apply
+   #'concat
    (maplist
     #'(lambda (cons)
         (if (cdr cons) (file-name-as-directory (car cons)) (car cons)))
     list)))
 
 (defun lispbox-file (rest)
-  (concat 
+  (concat
    (file-name-as-directory
     (expand-file-name
      (or (getenv "LISPBOX_HOME")

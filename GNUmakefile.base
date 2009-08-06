@@ -6,4 +6,3 @@ include GNUmakefile.vars
 
 $(prefix) staging:
 	mkdir -p $@
-

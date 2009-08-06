@@ -11,5 +11,3 @@ $(prefix)/$(THING): staging/$(THING) $(prefix)
 staging/$(THING): source-archives/$(THING).tar.gz  staging
 	cat $< | (cd staging; tar xzf -)
 	cd staging/$(THING)/doc; $(MAKE); $(MAKE) clean
-
-

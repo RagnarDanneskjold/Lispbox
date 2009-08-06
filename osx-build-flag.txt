@@ -80,22 +80,22 @@ Content-Type: text/plain;
 
 On 4 Nov 2005, at 19:38, Ken Raeburn wrote:
 
-> I have an EmacsInstaller.dmg that I built on Sep 23, which  
-> installed an Emacs.app that worked just fine, up until earlier  
-> today when I updated my OS from 10.4.2 to 10.4.3.  It was built  
-> with mac/make-package, I think with defaults except for telling it  
-> to build a self-contained app.  Now it crashes at startup, and the  
+> I have an EmacsInstaller.dmg that I built on Sep 23, which
+> installed an Emacs.app that worked just fine, up until earlier
+> today when I updated my OS from 10.4.2 to 10.4.3.  It was built
+> with mac/make-package, I think with defaults except for telling it
+> to build a self-contained app.  Now it crashes at startup, and the
 > CrashReporter log can't even give me a stack trace:
 
-This is unfortunate, but seems to be a known problem. Similarly,  
+This is unfortunate, but seems to be a known problem. Similarly,
 binaries built on 10.4 generally don't run on 10.3.
 
-The Mac port contains a lot of code to support ancient systems /  
-system APIs like MacOS 8/9, apparently even without CarbonLib (never  
-tried, though), but there is pretty much no binary compatibility  
+The Mac port contains a lot of code to support ancient systems /
+system APIs like MacOS 8/9, apparently even without CarbonLib (never
+tried, though), but there is pretty much no binary compatibility
 between OS versions for Emacs.
 
-Have you tried setting the environment variable  
+Have you tried setting the environment variable
 MACOSX_DEPLOYMENT_TARGET=10.4 ?
 E.g.
 
@@ -173,7 +173,3 @@ Emacs-devel mailing list
 Emacs-devel@gnu.org
 http://lists.gnu.org/mailman/listinfo/emacs-devel
 --===============1535739518==--
-
-
-
-

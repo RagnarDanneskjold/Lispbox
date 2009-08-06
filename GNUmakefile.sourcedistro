@@ -15,4 +15,3 @@ lispbox-$(version).tar.gz: /tmp/lispbox-$(version)
 
 /tmp/lispbox-$(version):
 	svn export -r $(revision) $(url) $@
-

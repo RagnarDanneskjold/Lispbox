@@ -6,8 +6,8 @@
         (list #'(lambda (old new obj type)
                   (declare (ignore obj type))
                   (when (and old new)
-                    (string= 
-                     (namestring old) 
+                    (string=
+                     (namestring old)
                      (let ((str (namestring new)))
                        (subseq str 0 (position #\; str :from-end t))))))))
   (tpl:setq-default *debugger-hook* #'swank:swank-debugger-hook)
@@ -26,7 +26,7 @@
 (setf swank::*swank-pprint-circle* nil)
 
 (defun lispbox-file (relative-pathname)
-  (merge-pathnames 
+  (merge-pathnames
    relative-pathname
    (make-pathname
     :directory (butlast (pathname-directory *load-pathname*))
@@ -45,10 +45,9 @@
 
 ;;; Clean up CL-USER package
 (loop with cl = (find-package :cl)
-   for p in (package-use-list :cl-user) 
+   for p in (package-use-list :cl-user)
    unless (eql p cl) do (unuse-package p :cl-user))
 (use-package :asdf :cl-user)
 (use-package :com.gigamonkeys.asdf-extensions :cl-user)
 
 (register-source-directory (lispbox-file (make-pathname :directory '(:relative "practicals-1.0"))))
-

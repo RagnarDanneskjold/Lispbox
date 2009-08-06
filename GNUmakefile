@@ -198,8 +198,8 @@ endif # not NO_EMACS
 lispbox: $(slime)
 lispbox: $(practicals)
 lispbox: $(prefix)/$(slime)/site-init.lisp
-lispbox: $(lispbox_elisp_dir)/lispbox.el 
-lispbox: $(prefix)/asdf.lisp 
+lispbox: $(lispbox_elisp_dir)/lispbox.el
+lispbox: $(prefix)/asdf.lisp
 lispbox: $(prefix)/asdf-extensions.lisp
 ifneq ($(LISPBOX_LISP),allegro)
 portableaserve := portableaserve-$(PORTABLEASERVE_VERSION)
@@ -222,7 +222,7 @@ foo: $(lispbox_elisp_dir)/lispbox.el
 $(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh $(if $(NO_EMACS),$(prefix),$(emacs))
 	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) $(SH) $< > $@
 
-$(prefix)/$(slime)/site-init.lisp: write-site-init-lisp.sh $(prefix)/$(slime) 
+$(prefix)/$(slime)/site-init.lisp: write-site-init-lisp.sh $(prefix)/$(slime)
 	PRACTICALS=$(practicals) PORTABLEASERVE=$(portableaserve) $(SH) $< > $@
 	chmod 0644 $@
 
@@ -299,5 +299,3 @@ emacs: $(emacs)
 slime-docs: emacs
 	cd $(prefix)/$(slime)/doc; \
 	$(MAKE) infodir=$(prefix)/$(emacs)/info install-info
-
-

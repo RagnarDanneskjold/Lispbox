@@ -41,17 +41,17 @@
   (:export #:defsystem #:oos #:operate #:find-system #:run-shell-command
 	   #:system-definition-pathname #:find-component ; miscellaneous
 	   #:hyperdocumentation #:hyperdoc
-	   
+
 	   #:compile-op #:load-op #:load-source-op #:test-system-version
 	   #:test-op
 	   #:operation			; operations
 	   #:feature			; sort-of operation
 	   #:version			; metaphorically sort-of an operation
-	   
+
 	   #:input-files #:output-files #:perform	; operation methods
 	   #:operation-done-p #:explain
-	   
-	   #:component #:source-file 
+
+	   #:component #:source-file
 	   #:c-source-file #:cl-source-file #:java-source-file
 	   #:static-file
 	   #:doc-file
@@ -61,7 +61,7 @@
 	   #:module			; components
 	   #:system
 	   #:unix-dso
-	   
+
 	   #:module-components		; component accessors
 	   #:component-pathname
 	   #:component-relative-pathname
@@ -70,7 +70,7 @@
 	   #:component-parent
 	   #:component-property
 	   #:component-system
-	   
+
 	   #:component-depends-on
 
 	   #:system-description
@@ -78,27 +78,27 @@
 	   #:system-author
 	   #:system-maintainer
 	   #:system-license
-	   
+
 	   #:operation-on-warnings
 	   #:operation-on-failure
-	   
-	   ;#:*component-parent-pathname* 
+
+	   ;#:*component-parent-pathname*
 	   #:*system-definition-search-functions*
 	   #:*central-registry*		; variables
 	   #:*compile-file-warnings-behaviour*
 	   #:*compile-file-failure-behaviour*
 	   #:*asdf-revision*
-	   
+
 	   #:operation-error #:compile-failed #:compile-warned #:compile-error
 	   #:error-component #:error-operation
-	   #:system-definition-error 
+	   #:system-definition-error
 	   #:missing-component
 	   #:missing-dependency
 	   #:circular-dependency	; errors
 
 	   #:retry
 	   #:accept                     ; restarts
-	   
+
 	   )
   (:use :cl))
 
@@ -111,7 +111,7 @@
 (defvar *asdf-revision* (let* ((v "$Revision: 1.86 $")
 			       (colon (or (position #\: v) -1))
 			       (dot (position #\. v)))
-			  (and v colon dot 
+			  (and v colon dot
 			       (list (parse-integer v :start (1+ colon)
 						    :junk-allowed t)
 				     (parse-integer v :start (1+ dot)
@@ -133,8 +133,8 @@
 and NIL NAME and TYPE components"
   (make-pathname :name nil :type nil :defaults pathname))
 
-(define-modify-macro appendf (&rest args) 
-		     append "Append onto list") 
+(define-modify-macro appendf (&rest args)
+		     append "Append onto list")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; classes, condiitons
@@ -219,7 +219,7 @@ and NIL NAME and TYPE components"
 
 (defgeneric component-system (component)
   (:documentation "Find the top-level system containing COMPONENT"))
-  
+
 (defmethod component-system ((component component))
   (aif (component-parent component)
        (component-system it)
@@ -250,7 +250,7 @@ and NIL NAME and TYPE components"
 
 (defgeneric component-relative-pathname (component)
   (:documentation "Extracts the relative pathname applicable for a particular component."))
-   
+
 (defmethod component-relative-pathname ((component module))
   (or (slot-value component 'relative-pathname)
       (make-pathname
@@ -337,7 +337,7 @@ and NIL NAME and TYPE components"
 (defun system-definition-pathname (system)
   (some (lambda (x) (funcall x system))
 	*system-definition-search-functions*))
-	
+
 (defvar *central-registry*
   '(*default-pathname-defaults*
     #+nil "/home/dan/src/sourceforge/cclan/asdf/systems/"
@@ -359,7 +359,7 @@ and NIL NAME and TYPE components"
 (defun find-system (name &optional (error-p t))
   (let* ((name (coerce-name name))
 	 (in-memory (gethash name *defined-systems*))
-	 (on-disk (system-definition-pathname name)))	 
+	 (on-disk (system-definition-pathname name)))
     (when (and on-disk
 	       (or (not in-memory)
 		   (< (car in-memory) (file-write-date on-disk))))
@@ -399,7 +399,7 @@ system."))
       (let ((m (find name (module-components module)
 		     :test #'equal :key #'component-name)))
 	(if (and m (version-satisfies m version)) m))))
-	    
+
 
 ;;; a component with no parent is a system
 (defmethod find-component ((module (eql nil)) name &optional version)
@@ -456,7 +456,7 @@ system."))
       (prin1 (operation-original-initargs o) stream))))
 
 (defmethod shared-initialize :after ((operation operation) slot-names
-				     &key force 
+				     &key force
 				     &allow-other-keys)
   (declare (ignore slot-names force))
   ;; empty method to disable initarg validity checking
@@ -495,7 +495,7 @@ system."))
 		  :original-initargs args args))
 	  ((subtypep (type-of o) dep-o)
 	   o)
-	  (t 
+	  (t
 	   (apply #'make-instance dep-o
 		  :parent o :original-initargs args args)))))
 
@@ -548,7 +548,7 @@ system."))
     (remove-if-not (lambda (x)
 		     (member (component-name c) (cdr x) :test #'string=))
 		   all-deps)))
-    
+
 (defmethod input-files ((operation operation) (c component))
   (let ((parent (component-parent c))
 	(self-deps (component-self-dependencies operation c)))
@@ -558,7 +558,7 @@ system."))
 		    (output-files (make-instance op)
 				  (find-component parent name))))
 		self-deps)
-	;; no previous operations needed?  I guess we work with the 
+	;; no previous operations needed?  I guess we work with the
 	;; original source file, then
 	(list (component-pathname c)))))
 
@@ -569,9 +569,9 @@ system."))
 	(in-files (input-files o c)))
     (cond ((and (not in-files) (not out-files))
 	   ;; arbitrary decision: an operation that uses nothing to
-	   ;; produce nothing probably isn't doing much 
+	   ;; produce nothing probably isn't doing much
 	   t)
-	  ((not out-files) 
+	  ((not out-files)
 	   (let ((op-done
 		  (gethash (type-of o)
 			   (component-operation-times c))))
@@ -606,7 +606,7 @@ system."))
 					:version required-v
 					:requires required-c)))
 		      (op (make-sub-operation c operation dep-c required-op)))
-		 (traverse op dep-c)))	   	   
+		 (traverse op dep-c)))
 	     (do-dep (op dep)
 	       (cond ((eq op 'feature)
 		      (or (member (car dep) *features*)
@@ -670,7 +670,6 @@ system."))
       (setf (visiting-component operation c) nil)
       (visit-component operation c (and forced t))
       forced)))
-  
 
 (defmethod perform ((operation operation) (c source-file))
   (sysdef-error
@@ -808,7 +807,7 @@ system."))
     (with-compilation-unit ()
       (loop for (op . component) in steps do
 	    (loop
-	     (restart-case 
+	     (restart-case
 		 (progn (perform op component)
 			(return))
 	       (retry ()
@@ -871,10 +870,9 @@ system."))
 					(resolve-symlinks  *load-truename*))
 				       *default-pathname-defaults*)
 				   ',component-options))))))
-  
 
 (defun class-for-type (parent type)
-  (let ((class 
+  (let ((class
 	 (find-class
 	  (or (find-symbol (symbol-name type) *package*)
 	      (find-symbol (symbol-name type) #.(package-name *package*)))
@@ -899,7 +897,7 @@ Returns the new tree (which probably shares structure with the old one)"
 		     (acons op2 (list c) (cdr first-op-tree))))
 	  tree)
 	(acons op1 (list (list op2 c)) tree))))
-		
+
 (defun union-of-dependencies (&rest deps)
   (let ((new-tree nil))
     (dolist (dep deps)
@@ -913,7 +911,7 @@ Returns the new tree (which probably shares structure with the old one)"
 
 (defun remove-keys (key-names args)
   (loop for ( name val ) on args by #'cddr
-	unless (member (symbol-name name) key-names 
+	unless (member (symbol-name name) key-names
 		       :key #'symbol-name :test 'equal)
 	append (list name val)))
 
@@ -959,14 +957,12 @@ Returns the new tree (which probably shares structure with the old one)"
 		      collect c
 		      if serial
 		      do (push (component-name c) *serial-depends-on*)))))
-      
       (setf (slot-value ret 'in-order-to)
 	    (union-of-dependencies
 	     in-order-to
 	     `((compile-op (compile-op ,@depends-on))
 	       (load-op (load-op ,@depends-on))))
 	    (slot-value ret 'do-first) `((compile-op (load-op ,@depends-on))))
-      
       (loop for (n v) in `((perform ,perform) (explain ,explain)
 			   (output-files ,output-files)
 			   (operation-done-p ,operation-done-p))
@@ -1020,27 +1016,27 @@ output to *verbose-out*.  Returns the shell's exit code."
     (format *verbose-out* "; $ ~A~%" command)
     #+sbcl
     (sb-impl::process-exit-code
-     (sb-ext:run-program  
+     (sb-ext:run-program
       "/bin/sh"
       (list  "-c" command)
       :input nil :output *verbose-out*))
-    
+
     #+(or cmu scl)
     (ext:process-exit-code
-     (ext:run-program  
+     (ext:run-program
       "/bin/sh"
       (list  "-c" command)
       :input nil :output *verbose-out*))
 
     #+allegro
     (excl:run-shell-command command :input nil :output *verbose-out*)
-    
+
     #+lispworks
     (system:call-system-showing-output
      command
      :shell-type "/bin/sh"
      :output-stream *verbose-out*)
-    
+
     #+clisp				;XXX not exactly *verbose-out*, I know
     (ext:run-shell-command  command :output :terminal :wait t)
 
@@ -1086,17 +1082,17 @@ output to *verbose-out*.  Returns the shell's exit code."
    '(merge-pathnames "systems/"
      (truename (sb-ext:posix-getenv "SBCL_HOME")))
    *central-registry*)
-  
+
   (pushnew
    '(merge-pathnames "site-systems/"
      (truename (sb-ext:posix-getenv "SBCL_HOME")))
    *central-registry*)
-  
+
   (pushnew
    '(merge-pathnames ".sbcl/systems/"
      (user-homedir-pathname))
    *central-registry*)
-  
+
   (pushnew 'module-provide-asdf sb-ext:*module-provider-functions*))
 
 (provide 'asdf)

@@ -26,6 +26,6 @@ goto end
 
 echo LISPBOX_HOME environment variable should be set and
 echo point to the installation directory of LISPBOX before
-echo launching this command.  
+echo launching this command.
 
 :end

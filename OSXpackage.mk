@@ -85,6 +85,3 @@ $(builddir)/LispboxInstaller.dmg: $(files)
 	hdiutil eject $(mount_location)
 	hdiutil resize $(builddir)/LispboxRW.dmg -sectors min
 	hdiutil convert $(builddir)/LispboxRW.dmg -format UDRO -o $(builddir)/LispboxInstaller.dmg
-
-
-

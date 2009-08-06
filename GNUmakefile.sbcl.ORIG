@@ -1,4 +1,3 @@
-
 all: staging-archives/$(THING).tar.gz
 
 include GNUmakefile.base

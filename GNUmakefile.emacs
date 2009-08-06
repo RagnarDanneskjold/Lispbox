@@ -20,7 +20,7 @@ staging/$(THING)/src/thing: staging/$(THING)/src/Makefile
 staging/$(THING)/src/Makefile: staging/$(THING)
 	cd staging/$(THING); ./configure --with-x --prefix=$(prefix)/$(THING)
 
-staging/$(THING): source-archives/$(THING).tar.gz 
+staging/$(THING): source-archives/$(THING).tar.gz
 	cat $< | (cd staging; tar xzf -)
 
 endif
@@ -28,7 +28,7 @@ endif
 ifeq ($(os),Darwin)
 
 EMACS_VERSION := emacs-20051204.220257
-sourcetar := $(EMACS_VERSION).tar.gz 
+sourcetar := $(EMACS_VERSION).tar.gz
 
 staging-archives/$(THING).tar.gz: staging/Applications/$(THING)
 	(cd staging/Applications/; tar czf - $(THING)) > $@
@@ -59,7 +59,7 @@ ifeq ($(os),Windows)
 staging-archives/$(THING).tar.gz: staging/$(THING)
 	(cd staging; tar czf - $(THING)) > $@
 
-staging/$(THING): binary-archives/$(THING)-fullbin-i386.tar.gz 
+staging/$(THING): binary-archives/$(THING)-fullbin-i386.tar.gz
 	cat $< | (cd staging; tar xzf -)
 
 endif

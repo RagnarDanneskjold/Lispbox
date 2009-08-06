@@ -24,4 +24,3 @@ mkdir -p /tmp/$dir
 (cd /tmp/; tar czf $dir.tar.gz $dir)
 mv /tmp/$dir.tar.gz .
 echo $dir.tar.gz
-

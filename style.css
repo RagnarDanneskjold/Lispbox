@@ -1,5 +1,5 @@
 body {
-  margin: .5in 1in; 
+  margin: .5in 1in;
   font-size: 12pt;
   font-family: sans-serif;
 }
@@ -32,7 +32,7 @@ div.chunk { clear: both; padding-bottom: 2ex; }
 
 p.back { font-size: 11pt; }
 
-.note { 
+.note {
   border-width: thin;
   border-style: solid;
   margin: 1ex;
@@ -47,5 +47,3 @@ div.copyright {
         text-align: right;
         padding-top: 24pt;
 }
-
-
