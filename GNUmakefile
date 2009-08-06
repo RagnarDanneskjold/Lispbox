@@ -210,7 +210,7 @@ endif # not JUST_LISP
 lispbox: $(lisp)
 lispbox: $(prefix)/$(lisp)/lispbox-register.el
 
-$(lispbox_script_dir)/lispbox.bat: lispbox.bat
+$(lispbox_script_dir)/lispbox.bat: new-lispbox.bat
 	cp $< $@
 
 $(lispbox_script_dir)/lispbox.sh: write-lispbox.sh $(prefix)
