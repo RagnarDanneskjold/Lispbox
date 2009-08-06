@@ -11,8 +11,8 @@ include GNUmakefile.vars
 
 #LISPBOX_LISP            := sbcl
 LISPBOX_LISP            := openmcl
-GNU_LINUX_EMACS_VERSION := 21.4
-WINDOWS_EMACS_VERSION   := 21.3
+GNU_LINUX_EMACS_VERSION := 23.1
+WINDOWS_EMACS_VERSION   := 23.1
 CLISP_VERSION           := 2.41
 ALLEGRO_VERSION         := 70_trial
 SBCL_VERSION            := 1.0.3
