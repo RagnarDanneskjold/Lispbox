@@ -222,7 +222,7 @@ $(lispbox_script_dir)/lispbox.sh: write-lispbox.sh $(prefix)
           $(SH) $< > $@
 	chmod +x $@
 
-$(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh $(if $(NO_EMACS),$(prefix),$(emacs))
+$(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh
 	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) \
           $(SH) $< > $@
 
