@@ -218,14 +218,17 @@ $(lispbox_script_dir)/lispbox.bat: new-lispbox.bat
 	cp $< $@
 
 $(lispbox_script_dir)/lispbox.sh: write-lispbox.sh $(prefix)
-	SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) $(SH) $< > $@
+	SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) \
+          $(SH) $< > $@
 	chmod +x $@
 
 $(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh $(if $(NO_EMACS),$(prefix),$(emacs))
-	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) $(SH) $< > $@
+	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) \
+          $(SH) $< > $@
 
 $(prefix)/$(slime)/site-init.lisp: write-site-init-lisp.sh $(prefix)/$(slime)
-	PRACTICALS=$(practicals) PORTABLEASERVE=$(portableaserve) $(SH) $< > $@
+	PRACTICALS=$(practicals) PORTABLEASERVE=$(portableaserve) \
+          $(SH) $< > $@
 	chmod 0644 $@
 
 $(prefix)/asdf.lisp: asdf.lisp
@@ -239,21 +242,37 @@ $(prefix)/asdf-extensions.lisp: asdf-extensions.lisp
 $(prefix)/$(allegro)/lispbox-register.el: lisppath := (lispbox-list-to-filename (list (file-name-directory load-file-name) \"alisp\"))
 $(prefix)/$(allegro)/lispbox-register.el: license  := \"devel.lic\"
 
-ifneq ($(os),Windows)
-$(prefix)/$(clisp)/lispbox-register.el:   lisppath := (lispbox-list-to-filename (list (file-name-directory load-file-name) \"bin\" \"clisp\")) \"-ansi\" \"-K\" \"full\" \"-B\" (lispbox-list-to-filename (list (file-name-directory load-file-name) \"lib\" \"clisp\"))
-endif
-
 ifeq ($(os),Windows)
-$(prefix)/$(clisp)/lispbox-register.el:   lisppath := \
-(lispbox-list-to-filename (list (file-name-directory load-file-name) \"full\" \"lisp.exe\")) \"-ansi\" \
-\"-M\" (lispbox-list-to-filename (list (file-name-directory load-file-name) \"full\" \"lispinit.mem\")) \
-\"-B\" (lispbox-list-to-filename (list (file-name-directory load-file-name) \"full/\"))
+$(prefix)/$(clisp)/lispbox-register.el: \
+  lisppath := (lispbox-list-to-filename \
+               (list (file-name-directory load-file-name) \
+                     \"full\" \"lisp.exe\")) \
+              \"-ansi\" \
+              \"-M\" (lispbox-list-to-filename \
+                      (list (file-name-directory load-file-name) \
+                            \"full\" \"lispinit.mem\")) \
+              \"-B\" (lispbox-list-to-filename \
+                      (list (file-name-directory load-file-name) \
+                            \"full/\"))
+else
+$(prefix)/$(clisp)/lispbox-register.el: \
+  lisppath := (lispbox-list-to-filename \
+               (list (file-name-directory load-file-name) \
+                     \"bin\" \"clisp\")) \
+              \"-ansi\" \"-K\" \"full\"
+              \"-B\" (lispbox-list-to-filename
+                      (list (file-name-directory load-file-name) \
+                            \"lib\" \"clisp\"))
 endif
 
-
-
-$(prefix)/$(sbcl)/lispbox-register.el:    lisppath := (lispbox-list-to-filename (list (file-name-directory load-file-name) \"bin\" \"sbcl\"))
-$(prefix)/$(openmcl)/lispbox-register.el: lisppath := (lispbox-list-to-filename (list (file-name-directory load-file-name) \"scripts\" \"$(OPENMCL_SCRIPT)\"))
+$(prefix)/$(sbcl)/lispbox-register.el: \
+  lisppath := (lispbox-list-to-filename \
+               (list (file-name-directory load-file-name) \
+                     \"bin\" \"sbcl\"))
+$(prefix)/$(openmcl)/lispbox-register.el: \
+  lisppath := (lispbox-list-to-filename \
+               (list (file-name-directory load-file-name) \
+                     \"scripts\" \"$(OPENMCL_SCRIPT)\"))
 
 $(prefix)/%/lispbox-register.el: $(lisp)
 	echo "(push (list '$(lisp) (list $(lisppath))) slime-lisp-implementations)" > $@
