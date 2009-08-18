@@ -222,9 +222,12 @@ $(lispbox_script_dir)/lispbox.sh: write-lispbox.sh $(prefix)
           $(SH) $< > $@
 	chmod +x $@
 
-$(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh
+$(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh $(lispbox_elisp_dir)
 	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) \
           $(SH) $< > $@
+
+$(lispbox_elisp_dir):
+	mkdir $(lispbox_elisp_dir)
 
 $(prefix)/$(slime)/site-init.lisp: write-site-init-lisp.sh $(prefix)/$(slime)
 	PRACTICALS=$(practicals) PORTABLEASERVE=$(portableaserve) \
