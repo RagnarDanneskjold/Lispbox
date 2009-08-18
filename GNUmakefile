@@ -182,14 +182,18 @@ endif
 lispbox: staging
 
 ifndef JUST_LISP
+
 ifndef NO_EMACS
 lispbox: $(emacs)
+lispbox: $(lispbox_elisp_dir)/lispbox.el
+lispbox: $(prefix)/$(lisp)/lispbox-register.el
+
 ifeq ($(os),Windows)
 lispbox: $(lispbox_script_dir)/lispbox.bat
-endif
-ifneq ($(os),Windows)
+else
 lispbox: $(lispbox_script_dir)/lispbox.sh
-endif
+endif # Windows
+
 ifeq ($(os),Darwin)
 lispbox: $(prefix)/Emacs.app/Contents/Info.plist
 endif # Darwin
@@ -198,17 +202,17 @@ endif # not NO_EMACS
 lispbox: $(slime)
 lispbox: $(practicals)
 lispbox: $(prefix)/$(slime)/site-init.lisp
-lispbox: $(lispbox_elisp_dir)/lispbox.el
 lispbox: $(prefix)/asdf.lisp
 lispbox: $(prefix)/asdf-extensions.lisp
+
 ifneq ($(LISPBOX_LISP),allegro)
 portableaserve := portableaserve-$(PORTABLEASERVE_VERSION)
 lispbox: $(portableaserve)
 endif # not allegro
+
 endif # not JUST_LISP
 
 lispbox: $(lisp)
-lispbox: $(prefix)/$(lisp)/lispbox-register.el
 
 $(lispbox_script_dir)/lispbox.bat: new-lispbox.bat
 	cp $< $@
@@ -216,8 +220,6 @@ $(lispbox_script_dir)/lispbox.bat: new-lispbox.bat
 $(lispbox_script_dir)/lispbox.sh: write-lispbox.sh $(prefix)
 	SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) $(SH) $< > $@
 	chmod +x $@
-
-foo: $(lispbox_elisp_dir)/lispbox.el
 
 $(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh $(if $(NO_EMACS),$(prefix),$(emacs))
 	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) OPENMCL_DIR=$(openmcl) $(SH) $< > $@
