@@ -1,6 +1,6 @@
 include GNUmakefile.vars
 
-lisps := clisp clozurecl
+lisps := clisp ccl
 
 ifneq ($(os),Windows)
 lisps += allegro sbcl

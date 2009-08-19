@@ -9,15 +9,15 @@
 
 include GNUmakefile.vars
 
-LISPBOX_LISP            := clozurecl
+LISPBOX_LISP            := ccl
 GNU_LINUX_EMACS_VERSION := 23.1
 WINDOWS_EMACS_VERSION   := 23.1
 CLISP_VERSION           := 2.41
 ALLEGRO_VERSION         := 70_trial
 SBCL_VERSION            := 1.0.3
-CLOZURECL_VERSION       := 1.3
-CLOZURECL_PLATFORM      := windows
-CLOZURECL_SCRIPT        := wx86cl.exe
+CCL_VERSION             := 1.3
+CCL_PLATFORM            := windows
+CCL_SCRIPT              := wx86cl.exe
 SLIME_VERSION           := 2009-08-06
 PRACTICALS_VERSION      := 1.0.3
 PORTABLEASERVE_VERSION  := 1.2.35
@@ -35,7 +35,7 @@ endif
 clisp   := clisp-$(CLISP_VERSION)
 allegro := acl$(ALLEGRO_VERSION)
 sbcl    := sbcl-$(SBCL_VERSION)
-clozurecl := clozurecl-$(CLOZURECL_VERSION)-$(CLOZURECL_PLATFORM)
+ccl     := clozurecl-$(CCL_VERSION)-$(CCL_PLATFORM)
 
 lisp       := $($(LISPBOX_LISP))
 slime      := slime-$(SLIME_VERSION)
@@ -213,12 +213,12 @@ $(lispbox_script_dir)/lispbox.bat: new-lispbox.bat
 	cp $< $@
 
 $(lispbox_script_dir)/lispbox.sh: write-lispbox.sh $(prefix)
-	SBCL_DIR=$(sbcl) CLOZURECL_DIR=$(clozurecl) \
+	SBCL_DIR=$(sbcl) CCL_DIR=$(ccl) \
           $(SH) $< > $@
 	chmod +x $@
 
 $(lispbox_elisp_dir)/lispbox.el: write-lispbox-el.sh $(lispbox_elisp_dir)
-	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) CLOZURECL_DIR=$(clozurecl) \
+	SLIME_DIR=$(slime) SBCL_DIR=$(sbcl) CCL_DIR=$(ccl) \
           $(SH) $< > $@
 
 $(lispbox_elisp_dir):
@@ -268,13 +268,13 @@ $(prefix)/$(sbcl)/lispbox-register.el: \
                (list (file-name-directory load-file-name) \
                      \"bin\" \"sbcl\"))
 
-$(prefix)/$(clozurecl)/lispbox-register.el: \
+$(prefix)/$(ccl)/lispbox-register.el: \
   lisppath := (lispbox-list-to-filename \
                (list (file-name-directory load-file-name) \
-                     \"$(CLOZURECL_SCRIPT)\"))
+                     \"$(CCL_SCRIPT)\"))
 
 $(prefix)/%/lispbox-register.el: $(lisp)
-	echo "(push (list '$(lisp) (list $(lisppath))) slime-lisp-implementations)" > $@
+	echo "(push (list '$(LISPBOX_LISP) (list $(lisppath))) slime-lisp-implementations)" > $@
 	if [ ! -z "$(license)" ]; \
 	  then echo "(lispbox-install-lisp-license (list $(license)) \"$(*)\")" >> $@; \
 	fi
@@ -287,7 +287,7 @@ endif
 # Unpacking pre-built staging archives into prefix.
 
 components := $(emacs) $(allegro) $(clisp) $(sbcl) $(slime) \
-              $(practicals) $(portableaserve) $(clozurecl)
+              $(practicals) $(portableaserve) $(ccl)
 
 $(components): %: staging-archives/%.tar.gz $(prefix)
 	cat $< | (cd $(prefix); gzip -cdq | tar xf -)
@@ -297,7 +297,7 @@ $(components): %: staging-archives/%.tar.gz $(prefix)
 staging-archives/$(emacs).tar.gz:          makefile := GNUmakefile.emacs
 staging-archives/$(allegro).tar.gz:        makefile := GNUmakefile.allegro
 staging-archives/$(clisp).tar.gz:          makefile := GNUmakefile.clisp
-staging-archives/$(clozurecl).tar.gz:      makefile := GNUmakefile.clozurecl
+staging-archives/$(ccl).tar.gz:            makefile := GNUmakefile.ccl
 staging-archives/$(sbcl).tar.gz:           makefile := GNUmakefile.sbcl
 staging-archives/$(slime).tar.gz:          makefile := GNUmakefile.slime
 staging-archives/$(practicals).tar.gz:     makefile := GNUmakefile.practicals

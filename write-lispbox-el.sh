@@ -41,15 +41,15 @@ if [ ! -z "${SBCL_DIR}" ]; then
 EOF
 fi
 
-if [ ! -z "${CLOZURECL_DIR}" ]; then
+if [ ! -z "${CCL_DIR}" ]; then
     cat <<EOF
-(setenv "CCL_DEFAULT_DIRECTORY" (lispbox-file "${CLOZURECL_DIR}"))
+(setenv "CCL_DEFAULT_DIRECTORY" (lispbox-file "${CCL_DIR}"))
 EOF
 fi
 
 cat <<EOF
 (require 'slime)
-(slime-setup '(slime-fancy))
+(slime-setup '(slime-fancy slime-banner))
 (lispbox-find-lisps)
 
 (provide 'lispbox)
