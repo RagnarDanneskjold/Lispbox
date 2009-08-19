@@ -271,7 +271,7 @@ $(prefix)/$(sbcl)/lispbox-register.el: \
 $(prefix)/$(clozurecl)/lispbox-register.el: \
   lisppath := (lispbox-list-to-filename \
                (list (file-name-directory load-file-name) \
-                     \"scripts\" \"$(CLOZURECL_SCRIPT)\"))
+                     \"$(CLOZURECL_SCRIPT)\"))
 
 $(prefix)/%/lispbox-register.el: $(lisp)
 	echo "(push (list '$(lisp) (list $(lisppath))) slime-lisp-implementations)" > $@
