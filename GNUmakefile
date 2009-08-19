@@ -292,9 +292,6 @@ components := $(emacs) $(allegro) $(clisp) $(sbcl) $(slime) \
 $(components): %: staging-archives/%.tar.gz $(prefix)
 	cat $< | (cd $(prefix); gzip -cdq | tar xf -)
 
-$(sbcl): staging-archives/$(sbcl).tar.gz $(prefix)
-	cat $< | (cd $(prefix); gzip -cdq | tar xf -)
-
 # Building staging archives if necessary
 
 staging-archives/$(emacs).tar.gz:          makefile := GNUmakefile.emacs
