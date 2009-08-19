@@ -1,8 +1,8 @@
 @echo off
+rem Thanks to Venkat who provided this bit of COMMAND wizardry.
+
 if NOT %OS%==Windows_NT goto checkhome
 for %%i in ( "%CD%" ) do set LISPBOX_HOME=%%~si%
-
-echo lispbox home is set to %LISPBOX_HOME%
 goto start
 
 :checkhome
