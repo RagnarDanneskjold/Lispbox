@@ -1,4 +1,3 @@
-#VERSION=$(subst openmcl-,,$(THING))
 VERSION=$(THING)
 
 all: staging-archives/$(THING).tar.gz
