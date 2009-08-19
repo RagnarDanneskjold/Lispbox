@@ -1,3 +1,7 @@
+#
+# Makefile to build Portable AllegroServe
+#
+
 all: staging-archives/$(THING).tar.gz
 
 include GNUmakefile.base
