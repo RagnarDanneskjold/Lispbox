@@ -167,7 +167,7 @@ distro := $(if $(JUST_LISP),$(distro_just_lisp),$(if $(NO_EMACS),$(distro_no_ema
 distro: $(distro)
 
 $(distro): lispbox
-	(cd $(TOP); zip - $(LISPBOX_HOME)) > $@
+	(cd $(TOP); zip --recurse-paths - $(LISPBOX_HOME)) > $@
 endif
 
 
